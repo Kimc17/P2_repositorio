@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/Main.dir/main.cpp.o CMakeFiles/Main.dir/Base64.cpp.o CMakeFiles/Main.dir/Chunk.cpp.o CMakeFiles/Main.dir/build/XML.cpp.o CMakeFiles/Main.dir/Oddysey_server.cpp.o CMakeFiles/Main.dir/pugixml.cpp.o  -o Main 
