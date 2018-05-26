@@ -5,7 +5,7 @@
 
 using namespace std;
 size_t  Chunk::Dividir(char *nombre) {
-    fichero = fopen(nombre, "rb");
+    fichero = fopen("/home/kimberlyc/Música/Believer.mp3", "rb");
 
     char *chunk;
     size_t result;

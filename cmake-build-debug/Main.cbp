@@ -84,42 +84,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Base64.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Base64.h">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Chunk.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Chunk.h">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/MostrarXML.h">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Oddysey_server.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/Oddysey_server.h">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/build/XML.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/build/XML.h">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/main.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/pugixml.cpp">
-			<Option target="Main"/>
-		</Unit>
-		<Unit filename="/home/kimberlyc/CLionProjects/Main/pugixml.hpp">
-			<Option target="Main"/>
-		</Unit>
 		<Unit filename="/home/kimberlyc/CLionProjects/Main/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

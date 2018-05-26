@@ -2,14 +2,16 @@
 #define MAIN_XML_H
 #include <iostream>
 #include "pugixml.hpp"
-
+using namespace std;
 class XML {
 public:
 
-    pugi::xml_document Nuevo();
-    pugi::xml_document AgregarNodo(pugi::xml_document doc, char nombre[], char descripcion[], char valor[]);
-    pugi::xml_node  Cargar(char name[]);
-    bool buscanombre(pugi::xml_node node, char name[]);
+    pugi::xml_document crear();
+    pugi::xml_node agregarRaiz(pugi::xml_document doc, const char nombreNodo);
+    pugi::xml_node agregar(pugi::xml_node raiz,const char nombreNodo,const char valor);
+    void agregarAHijo( pugi::xml_node nodo, string nombre,const char valor);
+    void imprimir( pugi::xml_document doc);
+    void guardar( pugi::xml_document doc);
 
 };
 

@@ -998,7 +998,7 @@ namespace pugi
 		char _memory[192];
 
 		// Non-copyable semantics
-		xml_document(const xml_document&);
+
 		xml_document& operator=(const xml_document&);
 
 		void _create();
@@ -1006,6 +1006,7 @@ namespace pugi
 		void _move(xml_document& rhs) PUGIXML_NOEXCEPT_IF_NOT_COMPACT;
 
 	public:
+		xml_document(const xml_document&);
 		// Default constructor, makes empty document
 		xml_document();
 

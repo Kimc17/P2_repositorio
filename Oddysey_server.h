@@ -14,15 +14,17 @@
 #include<unistd.h>    //Permite el write
 #include<pthread.h> //Biblioteca de Threads , asociada a lpthread
 #include <jsoncpp/json/json.h>
+#include "XML.h"
+#include <fstream>
+#include "pugixml.hpp"
+#include "List.h"
+#include "Chunk.h"
 //#include "pugixml.cpp"
 
 
 class Server {
 public:
     int crear();
-
-
-
 };
 
 #endif //MAIN_ODDYSEY_SERVER_H
