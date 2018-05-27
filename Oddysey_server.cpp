@@ -24,6 +24,8 @@ List<string> Chunks();
 long tam();
 pugi::xml_document XML(int codigo);
 
+void enviarChunks();
+
 int socket_desc , client_sock , c;
 struct sockaddr_in server , client;
 
@@ -101,111 +103,113 @@ void *manejador_conexion(void *socket_desc) {
     int read_size;
     char client_message[200];
 
+    int codigo = 00;
+
+    if (codigo == 00) {
+        //Recibir mensajes del cliente
+        while ((read_size = recv(sock, client_message, 300, 0)) > 0) {
+            client_message[read_size] = '\0';
+
+            // Enviar mensaje de vuelta al cliente
+            pugi::xml_document doc = XML(00);
 
 
 
-    //Recibir mensajes del cliente
-    while ((read_size = recv(sock, client_message, 300, 0)) > 0) {
-        client_message[read_size] = '\0';
-
-        // Enviar mensaje de vuelta al cliente
-        pugi::xml_document doc = XML(00);
-
+            // Escribe un documento xml completo en la secuencia de cadenas
+            std::stringstream ss;
+            doc.save(ss, "");
+            cout << "El XML es: \n" << ss.str() << std::endl;
+            ss.str() += "+";
 
 
-        // Escribe un documento xml completo en la secuencia de cadenas
-        std::stringstream ss;
-        doc.save(ss, "");
-        cout << "El XML es: \n" << ss.str() << std::endl;
-        ss.str() += "+";
+            send(sock, ss.str().c_str(), ss.str().length(), 0);
 
-
-        send(sock, ss.str().c_str(), ss.str().length(), 0);
-
-        //Mensaje recibido por el cliente
-        cout << "Recibido " << client_message << endl;
-
-    }
-
-    // Si se desconecta el cliente
-    if (read_size == 0) {
-        puts("Cliente desconectado");
-        fflush(stdout);
-    } else if (read_size == -1) {
-        perror("Fallo");
-    }
-}
-
-
-
-
-List<string> Chunks() {
-
-    List<string>* ListaChunks= new List<string>();//Lista de chunks
-    FILE *fichero, *fichDest; //ficheros para pobar
-
-
-    char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80]; //ficheros
-    long longitud;// Tamaño del fichero
-    long cantidad; //bytes leidos
-    int i, num_partes= 6;
-
-
-    //Acceder a el fichero de origen
-    char nombreOrg[]= "/home/kimberlyc/Música/ejemplo.mp3";
-    if ((fichero = fopen(nombreOrg, "rb")) == NULL)  {
-        printf("No existe el fichero\n");
-        exit(1);
-    }
-
-    if ((fichDest = fopen(nombreDest, "wb")) == NULL)  {
-        printf("No se ha podido crear el fichero destino!\n");
-        exit(2);
-    }
-    /* Se clacula la longitud del archivo */
-    fseek(fichero, 0, SEEK_END);
-    longitud = ftell(fichero);
-    fseek(fichero, 0, SEEK_SET);
-    if ((fichDest = fopen(nombreDest, "wb")) == NULL)  {
-        printf("No se ha podido crear el fichero de destino\n");
-        exit(2);
-    }
-
-    //Se nombra el subarchivo
-    for(i=0; i <num_partes; i++) {
-        sprintf(partes, "00%i_", i);
-        strcat(partes,nombreDest1 );
-        if ((fichDest = fopen(partes, "wb")) == NULL)  {
-            printf("No se ha podido crear el fichero de destino\n");
-            exit(4);
+            //Mensaje recibido por el cliente
+            cout << "Recibido " << client_message << endl;
+            //usleep(10);
+            //enviarChunks();}
         }
 
-        unsigned char buffer[longitud]; //buffer para chunks
-
-        fseek(fichero, i*longitud/num_partes, SEEK_SET);
-        cantidad = fread( buffer, 1, longitud/num_partes, fichero);
-        /*Se guarda cada parte*/
-        string str = (const char *) buffer;
-        string a= base64_encode(buffer,str.size());
 
 
-        cout << "Codificado es: "<< a<< "\n\n";
-        fwrite(buffer, 1, cantidad, fichDest);
-
-        if (cantidad != longitud/num_partes){
-            printf("No se han generado todos los archivos\n");}
-
-
-        strcpy(nombreDest1, nombreDest);
-        ListaChunks->Insert(a);
+        // Si se desconecta el cliente
+        if (read_size == 0) {
+            puts("Cliente desconectado");
+            fflush(stdout);
+        } else if (read_size == -1) {
+            perror("Fallo");
+        }
     }
-    //Cerrar los ficheros
-    fclose(fichero);
-    fclose(fichDest);
-
-    return *ListaChunks;
-
 }
+
+    List<string> Chunks() {
+
+        List<string> *ListaChunks = new List<string>();//Lista de chunks
+        FILE *fichero, *fichDest; //ficheros para pobar
+
+
+        char nombreDest[80] = "ejemplo.mp3", nombreDest1[80], partes[80]; //ficheros
+        long longitud;// Tamaño del fichero
+        long cantidad; //bytes leidos
+        int i, num_partes = 20;
+
+
+        //Acceder a el fichero de origen
+        char nombreOrg[] = "/home/kimberlyc/Música/ejemplo.mp3";
+        if ((fichero = fopen(nombreOrg, "rb")) == NULL) {
+            printf("No existe el fichero\n");
+            exit(1);
+        }
+
+        if ((fichDest = fopen(nombreDest, "wb")) == NULL) {
+            printf("No se ha podido crear el fichero destino!\n");
+            exit(2);
+        }
+        /* Se clacula la longitud del archivo */
+        fseek(fichero, 0, SEEK_END);
+        longitud = ftell(fichero);
+        fseek(fichero, 0, SEEK_SET);
+        if ((fichDest = fopen(nombreDest, "wb")) == NULL) {
+            printf("No se ha podido crear el fichero de destino\n");
+            exit(2);
+        }
+
+        //Se nombra el subarchivo
+        for (i = 0; i < num_partes; i++) {
+            sprintf(partes, "00%i_", i);
+            strcat(partes, nombreDest1);
+            if ((fichDest = fopen(partes, "wb")) == NULL) {
+                printf("No se ha podido crear el fichero de destino\n");
+                exit(4);
+            }
+
+            unsigned char buffer[longitud]; //buffer para chunks
+
+            fseek(fichero, i * longitud / num_partes, SEEK_SET);
+            cantidad = fread(buffer, 1, longitud / num_partes, fichero);
+            /*Se guarda cada parte*/
+            string str = (const char *) buffer;
+            string a = base64_encode(buffer, cantidad);
+
+
+            //cout << "Codificado es: "<< a<< "\n\n";
+            fwrite(buffer, 1, cantidad, fichDest);
+
+            if (cantidad != longitud / num_partes) {
+                printf("No se han generado todos los archivos\n");
+            }
+
+
+            strcpy(nombreDest1, nombreDest);
+            ListaChunks->Insert(a);
+        }
+        //Cerrar los ficheros
+        fclose(fichero);
+        fclose(fichDest);
+
+        return *ListaChunks;
+
+    }
 /*long tam(){
     char nombreOrg[]= "/home/kimberlyc/Música/ejemplo.mp3";
     FILE *fichero;
@@ -220,50 +224,52 @@ List<string> Chunks() {
 
 
 
-pugi::xml_document XML(int codigo) {
-    // codigo leido del xml en el cliente
-    pugi::xml_document doc;
-    List<string> ListaChunks = Chunks();
+    pugi::xml_document XML(int codigo) {
+        // codigo leido del xml en el cliente
+        pugi::xml_document doc;
+        List<string> ListaChunks = Chunks();
 
-    //cout << "El tamaño de la lista es " << ListaChunks.length()<<"\n";
+        //cout << "El tamaño de la lista es " << ListaChunks.length()<<"\n";
 
-    if (codigo == 00) {
-        pugi::xml_node node = doc.append_child("comunicacion");
-        pugi::xml_node descr0 = node.append_child("codigo");
-        descr0.append_child(pugi::node_pcdata).set_value("00");
+        if (codigo == 00) {
+            pugi::xml_node node = doc.append_child("comunicacion");
+            pugi::xml_node descr0 = node.append_child("codigo");
+            descr0.append_child(pugi::node_pcdata).set_value("00");
 
-        std::string ss = std::to_string(0); //Aqui va el numero de chunk pedido
-        char const *num = ss.c_str();
-        std::string s = std::to_string(ListaChunks.length());
-        char const *cantChunks = s.c_str();
-
-
-        pugi::xml_node descr3 = node.append_child("offset");
-        descr3.append_child(pugi::node_pcdata).set_value(num);
-        pugi::xml_node descr4 = node.append_child("limite");
-        descr4.append_child(pugi::node_pcdata).set_value(cantChunks);
-
-        pugi::xml_node descr5 = node.append_child("Data");
-        descr5.append_child(pugi::node_pcdata).set_value("Para el Json");
-
-        std::ostringstream oss;
-        oss << ListaChunks.Get(0);
-        std::string buffer = oss.str();
-
-        char const *buff = buffer.c_str();
-
-        pugi::xml_node descr6 = node.append_child("mBytes");
-        descr6.append_child(pugi::node_pcdata).set_value(buff);
-
-        pugi::xml_node param = node.insert_child_after("param", descr5);
+            std::string ss = std::to_string(0); //Aqui va el numero de chunk pedido
+            char const *num = ss.c_str();
+            std::string s = std::to_string(ListaChunks.length());
+            char const *cantChunks = s.c_str();
 
 
-        //long tamanio = tam();
+            pugi::xml_node descr3 = node.append_child("offset");
+            descr3.append_child(pugi::node_pcdata).set_value(num);
+            pugi::xml_node descr4 = node.append_child("limite");
+            descr4.append_child(pugi::node_pcdata).set_value(cantChunks);
 
-        param.append_attribute("nombre") = "Sutra";
-        //param.append_attribute("tamaño") = tamanio;
-        param.insert_attribute_after("path", param.attribute("nombre")) = "/home/kimberlyc/Música/ejemplo.mp3";
+            pugi::xml_node descr5 = node.append_child("Data");
+            descr5.append_child(pugi::node_pcdata).set_value("Para el Json");
 
+            std::ostringstream oss;
+            oss << ListaChunks.Get(0);
+            std::string buffer = oss.str();
+
+            char const *buff = buffer.c_str();
+
+            pugi::xml_node descr6 = node.append_child("mBytes");
+            descr6.append_child(pugi::node_pcdata).set_value(buff);
+
+            pugi::xml_node param = node.insert_child_after("param", descr5);
+
+
+            //long tamanio = tam();
+
+            param.append_attribute("nombre") = "Sutra";
+            //param.append_attribute("tamaño") = tamanio;
+            param.insert_attribute_after("path", param.attribute("nombre")) = "/home/kimberlyc/Música/ejemplo.mp3";
+
+        }
+        return doc;
     }
-    return doc;
-}
+
+
