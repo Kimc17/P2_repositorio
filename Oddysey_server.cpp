@@ -1,4 +1,3 @@
-#include <tic.h>
 #include "Oddysey_server.h"
 #include "Base64.h"
 
@@ -19,14 +18,39 @@ pugi::xml_document XML(int codigo);
 
 int socket_desc , client_sock , c;
 struct sockaddr_in server , client;
-
-int main() {
-    Server *server = new Server;
-    server->crear();
+using namespace std;
+typedef unsigned char BYTE;
 
 
-}
 
+// Get the size of a file
+
+    long getFileSize(FILE *file)
+
+    {
+
+        long lCurPos, lEndPos;
+
+        lCurPos = ftell(file);
+
+        fseek(file, 0, 2);
+
+        lEndPos = ftell(file);
+
+        fseek(file, lCurPos, 0);
+
+        return lEndPos;
+
+    }
+
+
+
+    int main()
+
+    {
+        Server *server = new Server;
+        server->crear();
+    }
 
 int Server::crear() {
     //Crea el socket
@@ -101,13 +125,12 @@ void *manejador_conexion(void *socket_desc) {
 
         //Leer respuesta como XML
         pugi::xml_document doc2;
-        char hola[]= "<Comunicacion><Codigo>00</Codigo></Comunicacion>";
-        pugi::xml_parse_result result = doc2.load_string(hola);
+        pugi::xml_parse_result result = doc2.load_string(client_message);
 
     //Imprimir en pantalla la respuesta XML
         std::stringstream s;
         doc2.save(s, "");
-        std::cout << "El XML actual es: \n" << s.str() << std::endl;
+        std::cout << "El XML de respuesta es: \n" << s.str() << std::endl;
         std::cout << "Resultado de conversion: " << result.description()<< std::endl;
 
 
@@ -145,12 +168,15 @@ List<string> Chunks() {
 
     List<string>* ListaChunks= new List<string>(); //Lista que llevara los chunks
     FILE *fichero, *fichDest; // ficheros para pobar
-    //char *buffer; // El buffer para guardar los datos leidos
+    BYTE *buffer;  // El buffer para guardar los datos leidos
+
 
     char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80]; //nombre de ficheros
     long longitud; //Tamaño del fichero
     long cantidad; // El número de bytes leídos
     int i,num_partes=4;
+
+    buffer = new BYTE[longitud];
 
     //Acceder al fichero de origen
     char nombreOrg[]= "/home/kimberlyc/CLionProjects/Main/mp3/ejemplo.mp3";
@@ -179,14 +205,13 @@ List<string> Chunks() {
 
 
 
-    /* Buffer de memoria para leer todo */
+    // Buffer de memoria para leer todo */
     /*buffer = (char *) malloc (longitud);
     if (buffer == NULL)  {
         printf("No se pudo reservar\n");
         exit(3);
     }*/
-   char buffer[longitud];
-
+   //char buffer[longitud];
 
     //Ciclo para dividir archivos
     for(i=0; i <num_partes; i++) {
@@ -202,15 +227,18 @@ List<string> Chunks() {
         cantidad = fread( buffer, 1, longitud/num_partes, fichero);
 
         //Se guarda cada parte
-        //fwrite(buffer, 1, cantidad, fichDest);
+
         Base64 *base= new Base64();
-        string buff(buffer);
+        //string buff(buffer);
+        string buff= string((char *)buffer);
         string a= base->Encode(buff);
-        //string b= base->Decode(a);
-        //char hola[buff.size()];
-        //for(int i = 0;i < b.length();i++) {
-        // b[i] = hola[i];
-       // }
+        string b= base->Decode(a);
+        char hola[buff.size()];
+        cout << "ESTOY ACA  "<<buff;
+        for(int i = 0;i < b.length();i++) {
+            b[i] = hola[i];
+
+        }
         fwrite(buffer, 1, cantidad, fichDest);
         if (cantidad != longitud/num_partes)
             printf("No se han generado todos los archivos\n");
@@ -222,7 +250,9 @@ List<string> Chunks() {
     // Ceerrar ficheros
     fclose(fichero);
     fclose(fichDest);
+    delete[]buffer;
     return *ListaChunks;
+
 
 }
 
