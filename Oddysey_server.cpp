@@ -1,12 +1,17 @@
+
+#include <fstream>
 #include "Oddysey_server.h"
+#define SIZE 2048*100
+#include "pugixml.hpp"
+#include "List.h"
+#include "Chunk.h"
 #include "Base64.h"
 
 /* Pasos para la ejecucion del servidor:
  * 1. Abrir una terminal
  * 2. Cambiar el directorio con: cd C-
- * 3. Escribir el comando: g++  -pthread  Base64.cpp Chunk.cpp pugixml.cpp -std=c++11  Oddysey_server.cpp -o server
- *
-a-ljsoncpp
+ * 3. Escribir el comando: g++ Base64.cpp Chunk.cpp pugixml.cpp  Odyssey_Server.cpp -o server
+a-ljsoncpp -std=c++11
  * 4. Ingresar ./server
 */
 
@@ -18,39 +23,12 @@ pugi::xml_document XML(int codigo);
 
 int socket_desc , client_sock , c;
 struct sockaddr_in server , client;
-using namespace std;
-typedef unsigned char BYTE;
 
+int main() {
+    Server *server = new Server;
+    server->crear();
+}
 
-
-// Get the size of a file
-
-    long getFileSize(FILE *file)
-
-    {
-
-        long lCurPos, lEndPos;
-
-        lCurPos = ftell(file);
-
-        fseek(file, 0, 2);
-
-        lEndPos = ftell(file);
-
-        fseek(file, lCurPos, 0);
-
-        return lEndPos;
-
-    }
-
-
-
-    int main()
-
-    {
-        Server *server = new Server;
-        server->crear();
-    }
 
 int Server::crear() {
     //Crea el socket
@@ -74,8 +52,12 @@ int Server::crear() {
         return 1;
     }
 
+
     //Escuhar si llegan conexiones
     listen(socket_desc , 3);
+
+
+
 
     //Se aceptan y  esperan las conexiones
     puts("Esperando por conexiones...");
@@ -118,37 +100,33 @@ void *manejador_conexion(void *socket_desc) {
 
 
 
+
+    //Recibir mensajes del cliente
     while ((read_size = recv(sock, client_message, 300, 0)) > 0) {
-        //Mensaje recibido
         client_message[read_size] = '\0';
-        cout << "Recibido " << client_message << endl;
-
-        //Leer respuesta como XML
-        pugi::xml_document doc2;
-        pugi::xml_parse_result result = doc2.load_string(client_message);
-
-    //Imprimir en pantalla la respuesta XML
-        std::stringstream s;
-        doc2.save(s, "");
-        std::cout << "El XML de respuesta es: \n" << s.str() << std::endl;
-        std::cout << "Resultado de conversion: " << result.description()<< std::endl;
-
 
         // Enviar mensaje de vuelta al cliente
-        //Cargar XML
         pugi::xml_document doc = XML(00);
+        //pugi::xml_document doc;
+        // pugi::xml_parse_result result = doc.load_file("ejemplo.xml");
+        // Escribe un documento xml completo en stdout
+        //std :: cout << "\nchar:" << std :: endl;
+        //doc.save (std :: cout, "" );
 
-        //Obtener XML e imprimirlo en pantalla
+
+        // Escribe un documento xml completo en la secuencia de cadenas
+        std::cout << "\nEscribe el documento xml en stringstream:" << std::endl;
         std::stringstream ss;
         doc.save(ss, "");
         std::cout << "El XML es: \n" << ss.str() << std::endl;
+        ss.str() += "+";
 
-        //Agregar caracter final
-        ss.str() += "}";
 
-        //Enviar el XML
         send(sock, ss.str().c_str(), ss.str().length(), 0);
         //memset(client_message, 0, 2000);
+
+        //Mensaje recibido por el cliente
+        cout << "Recibido " << client_message << endl;
 
     }
 
@@ -165,23 +143,17 @@ void *manejador_conexion(void *socket_desc) {
 
 
 List<string> Chunks() {
-
-    List<string>* ListaChunks= new List<string>(); //Lista que llevara los chunks
-    FILE *fichero, *fichDest; // ficheros para pobar
-    BYTE *buffer;  // El buffer para guardar los datos leidos
-
-
-    char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80]; //nombre de ficheros
-    long longitud; //Tamaño del fichero
-    long cantidad; // El número de bytes leídos
+    cout <<"hola";
+    List<string>* ListaChunks= new List<string>();
+    FILE *fichero, *fichDest; /* ficheros para pobar*/
+    //char *buffer; /* El buffer para guardar los datos leidos */
+    /* Los nombres de los ficheros */
+    char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80];
+    long longitud; /* Tamaño del fichero */
+    long cantidad; /* El número de bytes leídos */
     int i,num_partes=4;
-
-    buffer = new BYTE[longitud];
-
-    //Acceder al fichero de origen
+    /* Acceder al fichero de origen */
     char nombreOrg[]= "/home/kimberlyc/CLionProjects/Main/mp3/ejemplo.mp3";
-
-    //Verifica si se han cargado los ficheros
     if ((fichero = fopen(nombreOrg, "rb")) == NULL)  {
         printf("No existe el fichero\n");
         exit(1);
@@ -191,29 +163,21 @@ List<string> Chunks() {
         printf("No se ha podido crear el fichero destino!\n");
         exit(2);
     }
-
+    /* Se clacula la longitud del archivo */
+    fseek(fichero, 0, SEEK_END);
+    longitud = ftell(fichero);
+    fseek(fichero, 0, SEEK_SET);
     if ((fichDest = fopen(nombreDest, "wb")) == NULL)  {
         printf("No se ha podido crear el fichero de destino\n");
         exit(2);
     }
-
-    //  Se calcula la longitud del archivo */
-    fseek(fichero, 0, SEEK_END);
-    longitud = ftell(fichero);
-    fseek(fichero, 0, SEEK_SET);
-
-
-
-
-    // Buffer de memoria para leer todo */
-    /*buffer = (char *) malloc (longitud);
+    /* Buffer de memoria para leer todo */
+   /* buffer = (char *) malloc (longitud);
     if (buffer == NULL)  {
         printf("No se pudo reservar\n");
         exit(3);
     }*/
-   //char buffer[longitud];
 
-    //Ciclo para dividir archivos
     for(i=0; i <num_partes; i++) {
         sprintf(partes, "00%i_", i);
         strcat(partes,nombreDest1 );
@@ -221,42 +185,29 @@ List<string> Chunks() {
             printf("No se ha podido crear el fichero de destino\n");
             exit(4);
         }
-        // Se reinicia en la posicion actual
+        unsigned char buffer[longitud];
+        /* Se lee por partes */
         fseek(fichero, i*longitud/num_partes, SEEK_SET);
-        //Se lee la parte
         cantidad = fread( buffer, 1, longitud/num_partes, fichero);
-
-        //Se guarda cada parte
-
-        Base64 *base= new Base64();
-        //string buff(buffer);
-        string buff= string((char *)buffer);
-        string a= base->Encode(buff);
+        /*Se guarda cada parte*/
+        string str = (const char *) buffer;
+        Base64* base= new Base64();
+        string a= base->Encode(str);
         string b= base->Decode(a);
-        char hola[buff.size()];
-        cout << "ESTOY ACA  "<<buff;
-        for(int i = 0;i < b.length();i++) {
-            b[i] = hola[i];
-
-        }
         fwrite(buffer, 1, cantidad, fichDest);
         if (cantidad != longitud/num_partes)
             printf("No se han generado todos los archivos\n");
         strcpy(nombreDest1, nombreDest);
-
-
         ListaChunks->Insert(a);
     }
-    // Ceerrar ficheros
+    /* Ceerrar ficheros*/
     fclose(fichero);
     fclose(fichDest);
-    delete[]buffer;
+    cout <<"holaaaaa";
     return *ListaChunks;
 
-
 }
-
-long tam(){//No esta sirviendo XD
+long tam(){
     char nombreOrg[]= "/home/kimberlyc/CLionProjects/untitled/mp3/ejemplo.mp3";
     FILE *fichero;
     fichero = fopen(nombreOrg, "rb");
@@ -271,15 +222,13 @@ long tam(){//No esta sirviendo XD
 
 
 pugi::xml_document XML(int codigo) {
-
+    // codigo leido del xml en el cliente
     pugi::xml_document doc;
-    //Se carga un a lista de chunks
     List<string> ListaChunks = Chunks();
 
-    cout << "El tamaño de la lista es " << ListaChunks.length()<<"\n";
+    //cout << "El tamaño de la lista es " << ListaChunks.length()<<"\n";
 
     if (codigo == 00) {
-        //Se crea un XML:
         pugi::xml_node node = doc.append_child("comunicacion");
         pugi::xml_node descr0 = node.append_child("codigo");
         descr0.append_child(pugi::node_pcdata).set_value("00");
@@ -298,7 +247,6 @@ pugi::xml_document XML(int codigo) {
         pugi::xml_node descr5 = node.append_child("Data");
         descr5.append_child(pugi::node_pcdata).set_value("Para el Json");
 
-        //Se carga la info del chunk actual
         std::ostringstream oss;
         oss << ListaChunks.Get(0);
         std::string buffer = oss.str();
@@ -311,6 +259,8 @@ pugi::xml_document XML(int codigo) {
         pugi::xml_node param = node.insert_child_after("param", descr5);
 
 
+        //long tamanio = tam();
+
         param.append_attribute("nombre") = "Sutra";
         //param.append_attribute("tamaño") = tamanio;
         param.insert_attribute_after("path", param.attribute("nombre")) = "/home/kimberlyc/CLionProjects/Main/mp3/ejemplo.mp3";
@@ -318,5 +268,3 @@ pugi::xml_document XML(int codigo) {
     }
     return doc;
 }
-
-
