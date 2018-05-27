@@ -1,4 +1,4 @@
-#ifndef MAIN_XML_H
+/*#ifndef MAIN_XML_H
 #define MAIN_XML_H
 #include <iostream>
 #include "pugixml.hpp"
@@ -19,4 +19,4 @@ public:
 
 
 
-#endif //MAIN_XML_H
+#endif //MAIN_XML_H*/

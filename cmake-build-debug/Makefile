@@ -48,10 +48,10 @@ RM = /opt/clion-2017.3.3/bin/cmake/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kimberlyc/CLionProjects/Main
+CMAKE_SOURCE_DIR = /home/kimberlyc/CLionProjects/P2_repositorio-master
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kimberlyc/CLionProjects/Main/cmake-build-debug
+CMAKE_BINARY_DIR = /home/kimberlyc/CLionProjects/P2_repositorio-master/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kimberlyc/CLionProjects/Main/cmake-build-debug/CMakeFiles /home/kimberlyc/CLionProjects/Main/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kimberlyc/CLionProjects/P2_repositorio-master/cmake-build-debug/CMakeFiles /home/kimberlyc/CLionProjects/P2_repositorio-master/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kimberlyc/CLionProjects/Main/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kimberlyc/CLionProjects/P2_repositorio-master/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -123,6 +123,114 @@ Main/fast:
 	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/build
 .PHONY : Main/fast
 
+Chunk.o: Chunk.cpp.o
+
+.PHONY : Chunk.o
+
+# target to build an object file
+Chunk.cpp.o:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Chunk.cpp.o
+.PHONY : Chunk.cpp.o
+
+Chunk.i: Chunk.cpp.i
+
+.PHONY : Chunk.i
+
+# target to preprocess a source file
+Chunk.cpp.i:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Chunk.cpp.i
+.PHONY : Chunk.cpp.i
+
+Chunk.s: Chunk.cpp.s
+
+.PHONY : Chunk.s
+
+# target to generate assembly for a file
+Chunk.cpp.s:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Chunk.cpp.s
+.PHONY : Chunk.cpp.s
+
+Oddysey_server.o: Oddysey_server.cpp.o
+
+.PHONY : Oddysey_server.o
+
+# target to build an object file
+Oddysey_server.cpp.o:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Oddysey_server.cpp.o
+.PHONY : Oddysey_server.cpp.o
+
+Oddysey_server.i: Oddysey_server.cpp.i
+
+.PHONY : Oddysey_server.i
+
+# target to preprocess a source file
+Oddysey_server.cpp.i:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Oddysey_server.cpp.i
+.PHONY : Oddysey_server.cpp.i
+
+Oddysey_server.s: Oddysey_server.cpp.s
+
+.PHONY : Oddysey_server.s
+
+# target to generate assembly for a file
+Oddysey_server.cpp.s:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/Oddysey_server.cpp.s
+.PHONY : Oddysey_server.cpp.s
+
+base64.o: base64.cpp.o
+
+.PHONY : base64.o
+
+# target to build an object file
+base64.cpp.o:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/base64.cpp.o
+.PHONY : base64.cpp.o
+
+base64.i: base64.cpp.i
+
+.PHONY : base64.i
+
+# target to preprocess a source file
+base64.cpp.i:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/base64.cpp.i
+.PHONY : base64.cpp.i
+
+base64.s: base64.cpp.s
+
+.PHONY : base64.s
+
+# target to generate assembly for a file
+base64.cpp.s:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/base64.cpp.s
+.PHONY : base64.cpp.s
+
+pugixml.o: pugixml.cpp.o
+
+.PHONY : pugixml.o
+
+# target to build an object file
+pugixml.cpp.o:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/pugixml.cpp.o
+.PHONY : pugixml.cpp.o
+
+pugixml.i: pugixml.cpp.i
+
+.PHONY : pugixml.i
+
+# target to preprocess a source file
+pugixml.cpp.i:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/pugixml.cpp.i
+.PHONY : pugixml.cpp.i
+
+pugixml.s: pugixml.cpp.s
+
+.PHONY : pugixml.s
+
+# target to generate assembly for a file
+pugixml.cpp.s:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/pugixml.cpp.s
+.PHONY : pugixml.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -132,6 +240,18 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... Main"
+	@echo "... Chunk.o"
+	@echo "... Chunk.i"
+	@echo "... Chunk.s"
+	@echo "... Oddysey_server.o"
+	@echo "... Oddysey_server.i"
+	@echo "... Oddysey_server.s"
+	@echo "... base64.o"
+	@echo "... base64.i"
+	@echo "... base64.s"
+	@echo "... pugixml.o"
+	@echo "... pugixml.i"
+	@echo "... pugixml.s"
 .PHONY : help
 
 

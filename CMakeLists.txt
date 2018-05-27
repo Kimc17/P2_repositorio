@@ -3,4 +3,4 @@ project(Main)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Main Base64.cpp Base64.h Chunk.cpp Chunk.h MostrarXML.h build/XML.cpp build/XML.h Oddysey_server.cpp Oddysey_server.h pugixml.cpp)
+add_executable(Main base64.cpp base64.h Chunk.cpp Chunk.h MostrarXML.h  Oddysey_server.cpp Oddysey_server.h pugixml.cpp)

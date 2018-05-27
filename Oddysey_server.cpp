@@ -1,21 +1,24 @@
-
 #include <fstream>
 #include "Oddysey_server.h"
 #define SIZE 2048*100
-#include "pugixml.hpp"
+
 #include "List.h"
-#include "Chunk.h"
-#include "Base64.h"
+#include "base64.h"
+#include "pugixml.hpp"
 
 /* Pasos para la ejecucion del servidor:
  * 1. Abrir una terminal
  * 2. Cambiar el directorio con: cd C-
- * 3. Escribir el comando: g++ Base64.cpp Chunk.cpp pugixml.cpp  Odyssey_Server.cpp -o server
+ * 3. Escribir el comando: g++  -pthread  base64.cpp Chunk.cpp pugixml.cpp -std=c++11  Oddysey_server.cpp -o server
+
+
 a-ljsoncpp -std=c++11
  * 4. Ingresar ./server
 */
 
 void *manejador_conexion(void *);
+
+class Base64;
 
 List<string> Chunks();
 long tam();
@@ -107,23 +110,17 @@ void *manejador_conexion(void *socket_desc) {
 
         // Enviar mensaje de vuelta al cliente
         pugi::xml_document doc = XML(00);
-        //pugi::xml_document doc;
-        // pugi::xml_parse_result result = doc.load_file("ejemplo.xml");
-        // Escribe un documento xml completo en stdout
-        //std :: cout << "\nchar:" << std :: endl;
-        //doc.save (std :: cout, "" );
+
 
 
         // Escribe un documento xml completo en la secuencia de cadenas
-        std::cout << "\nEscribe el documento xml en stringstream:" << std::endl;
         std::stringstream ss;
         doc.save(ss, "");
-        std::cout << "El XML es: \n" << ss.str() << std::endl;
+        cout << "El XML es: \n" << ss.str() << std::endl;
         ss.str() += "+";
 
 
         send(sock, ss.str().c_str(), ss.str().length(), 0);
-        //memset(client_message, 0, 2000);
 
         //Mensaje recibido por el cliente
         cout << "Recibido " << client_message << endl;
@@ -143,17 +140,19 @@ void *manejador_conexion(void *socket_desc) {
 
 
 List<string> Chunks() {
-    cout <<"hola";
-    List<string>* ListaChunks= new List<string>();
-    FILE *fichero, *fichDest; /* ficheros para pobar*/
-    //char *buffer; /* El buffer para guardar los datos leidos */
-    /* Los nombres de los ficheros */
-    char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80];
-    long longitud; /* Tamaño del fichero */
-    long cantidad; /* El número de bytes leídos */
-    int i,num_partes=4;
-    /* Acceder al fichero de origen */
-    char nombreOrg[]= "/home/kimberlyc/CLionProjects/Main/mp3/ejemplo.mp3";
+
+    List<string>* ListaChunks= new List<string>();//Lista de chunks
+    FILE *fichero, *fichDest; //ficheros para pobar
+
+
+    char nombreDest[80]= "ejemplo.mp3", nombreDest1[80],partes[80]; //ficheros
+    long longitud;// Tamaño del fichero
+    long cantidad; //bytes leidos
+    int i, num_partes= 6;
+
+
+    //Acceder a el fichero de origen
+    char nombreOrg[]= "/home/kimberlyc/Música/ejemplo.mp3";
     if ((fichero = fopen(nombreOrg, "rb")) == NULL)  {
         printf("No existe el fichero\n");
         exit(1);
@@ -171,13 +170,8 @@ List<string> Chunks() {
         printf("No se ha podido crear el fichero de destino\n");
         exit(2);
     }
-    /* Buffer de memoria para leer todo */
-   /* buffer = (char *) malloc (longitud);
-    if (buffer == NULL)  {
-        printf("No se pudo reservar\n");
-        exit(3);
-    }*/
 
+    //Se nombra el subarchivo
     for(i=0; i <num_partes; i++) {
         sprintf(partes, "00%i_", i);
         strcat(partes,nombreDest1 );
@@ -185,30 +179,35 @@ List<string> Chunks() {
             printf("No se ha podido crear el fichero de destino\n");
             exit(4);
         }
-        unsigned char buffer[longitud];
-        /* Se lee por partes */
+
+        unsigned char buffer[longitud]; //buffer para chunks
+
         fseek(fichero, i*longitud/num_partes, SEEK_SET);
         cantidad = fread( buffer, 1, longitud/num_partes, fichero);
         /*Se guarda cada parte*/
         string str = (const char *) buffer;
-        Base64* base= new Base64();
-        string a= base->Encode(str);
-        string b= base->Decode(a);
+        string a= base64_encode(buffer,str.size());
+
+
+        cout << "Codificado es: "<< a<< "\n\n";
         fwrite(buffer, 1, cantidad, fichDest);
-        if (cantidad != longitud/num_partes)
-            printf("No se han generado todos los archivos\n");
+
+        if (cantidad != longitud/num_partes){
+            printf("No se han generado todos los archivos\n");}
+
+
         strcpy(nombreDest1, nombreDest);
         ListaChunks->Insert(a);
     }
-    /* Ceerrar ficheros*/
+    //Cerrar los ficheros
     fclose(fichero);
     fclose(fichDest);
-    cout <<"holaaaaa";
+
     return *ListaChunks;
 
 }
-long tam(){
-    char nombreOrg[]= "/home/kimberlyc/CLionProjects/untitled/mp3/ejemplo.mp3";
+/*long tam(){
+    char nombreOrg[]= "/home/kimberlyc/Música/ejemplo.mp3";
     FILE *fichero;
     fichero = fopen(nombreOrg, "rb");
     fseek(fichero, 0, SEEK_END);
@@ -217,7 +216,7 @@ long tam(){
     return longitud;
 
 }
-
+*/
 
 
 
@@ -263,7 +262,7 @@ pugi::xml_document XML(int codigo) {
 
         param.append_attribute("nombre") = "Sutra";
         //param.append_attribute("tamaño") = tamanio;
-        param.insert_attribute_after("path", param.attribute("nombre")) = "/home/kimberlyc/CLionProjects/Main/mp3/ejemplo.mp3";
+        param.insert_attribute_after("path", param.attribute("nombre")) = "/home/kimberlyc/Música/ejemplo.mp3";
 
     }
     return doc;

@@ -1,6 +1,8 @@
-#define SIZE 2048*100
+/*
+ *
+ *#define SIZE 2048*100
 #include "Chunk.h"
-#include "Base64.h"
+
 
 
 using namespace std;
@@ -53,4 +55,4 @@ string Chunk::Debase64(string resultado) {
     Base64 *base = new Base64();
     string ejemp = base->Decode(resultado);
     return ejemp;
-}
+} */

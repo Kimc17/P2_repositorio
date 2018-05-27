@@ -6,53 +6,33 @@
 
 #IncludeRegexTransform: 
 
-/home/kimberlyc/CLionProjects/Main/Base64.cpp
-Base64.h
-/home/kimberlyc/CLionProjects/Main/Base64.h
-sstream
--
-
-/home/kimberlyc/CLionProjects/Main/Base64.h
-iostream
--
-string
--
-math.h
--
-cstdio
--
-cstdlib
--
-
-/home/kimberlyc/CLionProjects/Main/Chunk.cpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Chunk.cpp
 Chunk.h
-/home/kimberlyc/CLionProjects/Main/Chunk.h
-Base64.h
-/home/kimberlyc/CLionProjects/Main/Base64.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Chunk.h
 
-/home/kimberlyc/CLionProjects/Main/Chunk.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Chunk.h
 iostream
 -
 cstdio
 -
 
-/home/kimberlyc/CLionProjects/Main/List.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/List.h
 iostream
 -
 
-/home/kimberlyc/CLionProjects/Main/Oddysey_server.cpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Oddysey_server.cpp
 fstream
 -
 Oddysey_server.h
-/home/kimberlyc/CLionProjects/Main/Oddysey_server.h
-pugixml.hpp
-/home/kimberlyc/CLionProjects/Main/pugixml.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Oddysey_server.h
 List.h
-/home/kimberlyc/CLionProjects/Main/List.h
-Chunk.h
-/home/kimberlyc/CLionProjects/Main/Chunk.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/List.h
+base64.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/base64.h
+pugixml.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugixml.hpp
 
-/home/kimberlyc/CLionProjects/Main/Oddysey_server.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/Oddysey_server.h
 stdlib.h
 -
 string
@@ -75,30 +55,22 @@ pthread.h
 -
 jsoncpp/json/json.h
 -
-XML.h
-/home/kimberlyc/CLionProjects/Main/XML.h
 
-/home/kimberlyc/CLionProjects/Main/XML.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/base64.cpp
+base64.h
+/home/kimberlyc/CLionProjects/P2_repositorio-master/base64.h
 iostream
 -
-pugixml.hpp
-/home/kimberlyc/CLionProjects/Main/pugixml.hpp
 
-/home/kimberlyc/CLionProjects/Main/main.cpp
-pugixml.hpp
-/home/kimberlyc/CLionProjects/Main/pugixml.hpp
-iostream
--
-stdio.h
--
-cstring
+/home/kimberlyc/CLionProjects/P2_repositorio-master/base64.h
+string
 -
 
-/home/kimberlyc/CLionProjects/Main/pugiconfig.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugiconfig.hpp
 
-/home/kimberlyc/CLionProjects/Main/pugixml.cpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugixml.cpp
 pugixml.hpp
-/home/kimberlyc/CLionProjects/Main/pugixml.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugixml.hpp
 stdlib.h
 -
 stdio.h
@@ -126,9 +98,9 @@ new
 stdint.h
 -
 
-/home/kimberlyc/CLionProjects/Main/pugixml.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugixml.hpp
 pugiconfig.hpp
-/home/kimberlyc/CLionProjects/Main/pugiconfig.hpp
+/home/kimberlyc/CLionProjects/P2_repositorio-master/pugiconfig.hpp
 stddef.h
 -
 exception
